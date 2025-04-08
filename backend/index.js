@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-const userRouter = require('./routers/Users');
+const userRouter = require('./routes/Users');
 app.use("/users", userRouter);
 
 //this is the function that makes the models in the database
