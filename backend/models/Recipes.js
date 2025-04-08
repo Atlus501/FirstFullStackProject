@@ -4,15 +4,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        authorId:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
+        
         body:{
             type: DataTypes.STRING,
             allowNull: false,
         },
-    }
-    );
+    });
     return Recipes;
 };

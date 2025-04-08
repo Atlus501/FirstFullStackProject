@@ -1,4 +1,4 @@
-import {Recipes} from '/Recipes'
+const {Recipes} = require("./Recipes");
 
 module.exports = (sequelize, DataTypes) =>{ 
     const Users = sequelize.define("Users", {
@@ -14,14 +14,16 @@ module.exports = (sequelize, DataTypes) =>{
         },
     }); 
     
-    Users.hasMany(Recipes, {
+    Users.associate = (models) =>{
+    Users.hasMany(models.Recipes, {
+        onDelete: "cascade",
+
         foreignKey:{
             name: 'authorId',
             type: DataTypes.INTEGER,
         }
     });
-
-    Recipes.belongsTo(Users);
+};
 
     return Users;
     //the first parameter creates a table with the name, the second parameter is an object that will define the table’s fields
