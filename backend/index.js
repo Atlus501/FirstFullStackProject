@@ -1,13 +1,17 @@
 //this is the main entry point for the backend
 
 const express = require("express");
-const db = require("./models");
 const app = express();
+
+const db = require("./models");
 
 app.use(express.json());
 
 const userRouter = require('./routes/Users');
 app.use("/users", userRouter);
+
+const recipeRouter = require('./routes/Recipes');
+app.use("/recipe", recipeRouter);
 
 //this is the function that makes the models in the database
 db.sequelize.sync().then( () =>{

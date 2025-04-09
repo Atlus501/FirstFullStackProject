@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const {Users} = require("../models"); //instance of models that was created
 
-//the post that used to create users
+//the route that used to create users
 router.post('/', async (req, res)=>{
     const user = req.body; //gets the object with the data to insert into the database
     user = await Users.create(user); //creates a new object in the Posts table

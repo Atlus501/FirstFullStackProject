@@ -1,3 +1,49 @@
 .App {
   text-align: center;
+  justify-content: column;
+}
+
+.navBox{
+  background-color: violet;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  padding: 15px;
+  margin: 10px;
+  border-bottom: solid 3px purple;
+
+}
+
+.navLink{
+  background-color: cyan;
+  border: solid 3px white;
+  padding: 5px;
+}
+
+.navLink:hover{
+  background-color: yellow;
+  scale: 1.2;
+}
+
+.form{
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+  border: solid 5px skyblue;
+  width: 60%;
+}
+
+.input{
+  width: 75%;
+  font-size: 18px;
+  height: 22px;
+  padding: 2px;
+  margin: 4px;
+}
+
+h1{
+  color: blue;
 }
