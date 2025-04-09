@@ -8,10 +8,10 @@ const db = require("./models");
 app.use(express.json());
 
 const userRouter = require('./routes/Users');
-app.use("/users", userRouter);
+app.use("/Users", userRouter);
 
 const recipeRouter = require('./routes/Recipes');
-app.use("/recipe", recipeRouter);
+app.use("/Recipe", recipeRouter);
 
 //this is the function that makes the models in the database
 db.sequelize.sync().then( () =>{

@@ -1,5 +1,3 @@
-const {Recipes} = require("./Recipes");
-
 module.exports = (sequelize, DataTypes) =>{ 
     const Users = sequelize.define("Users", {
         username:{
