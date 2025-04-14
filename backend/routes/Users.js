@@ -6,13 +6,10 @@ const {Users} = require("../models"); //instance of models that was created
 //the route that used to create users
 router.post('/', async (req, res)=>{
     const user = req.body; //gets the object with the data to insert into the database
-    user = await Users.create(user); //creates a new object in the Posts table
-
+   
     try{
-        if(user)
-            return res.json({success: "user has been created"});
-
-        return res.json({error: "user wasn't created"});
+        await Users.create(user); //creates a new object in the Posts table
+        return res.json(user.json());
     }
     catch(error){
         return res.json({error: "user wasn't created"});

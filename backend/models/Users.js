@@ -19,11 +19,12 @@ module.exports = (sequelize, DataTypes) =>{
         foreignKey:{
             name: 'authorId',
             type: DataTypes.INTEGER,
-        }
-    });
-};
+        },
+
+        });
+    };
 
     return Users;
     //the first parameter creates a table with the name, the second parameter is an object that will define the table’s fields
-    }
+    };
     

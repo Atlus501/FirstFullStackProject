@@ -12,9 +12,11 @@ function Login() {
     const [error, setError] = useState("");
 
     const onSubmit = (data) => {
-        axios.post("https://localhost3001/Users", data).then((response) => {
+        setError("");
+
+        axios.post("https://localhost3001/users", data).then((response) => {
             if (response.error) {
-                setError(response.error);
+                setError("An error has occured: " + response.error);
             } else {
                 setError("User successfully created!");
             }
