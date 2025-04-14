@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 import * as Yup from 'yup';
 
 //this is the function that would create the login page
 function Login() {
+    const navigate = useNavigate();
+
     const initialValues = {
         username: "",
         password: "",
@@ -21,7 +24,7 @@ function Login() {
                 localStorage.setItem("accessToken", response.data);
             } else {
                 setError("User authenticated!");
-
+                navigate("/authed");
             }
         }).catch((err) => {
             setError("An error occurred: " + err.message);

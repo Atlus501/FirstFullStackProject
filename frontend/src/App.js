@@ -1,6 +1,7 @@
 import React from 'react'
 import Login from './pages/Login'
 import CreateAccount from './pages/CreateAccount'
+import CreateRecipe from './pages/CreateRecipe'
 
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import './App.css';
@@ -14,11 +15,13 @@ function App() {
         <div className = "navBox">
           <Link to = "/" className = "navLink">Login In</Link>
           <Link to = "/createAccount" className = "navLink">Create Account</Link>
+          <Link to = "/authed" className = "navLink">Create Recipe</Link>
         </div>
 
         <Routes>
           <Route path = "/" element = {<Login/>}/>
           <Route path = "/createAccount" element = {<CreateAccount/>}/>
+          <Route path = "/authed" element = {<CreateRecipe/>}/>
         </Routes>
 
       </Router>

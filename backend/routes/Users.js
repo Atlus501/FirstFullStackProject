@@ -16,7 +16,7 @@ router.post('/', async (req, res)=>{
         if(!user)
             return res.json({error: "User doesn't exist!"});
 
-        bcrpyt.compare(password, user.password).then((match) => {
+        bcrypt.compare(password, user.password).then((match) => {
             if(!match)
                 return res.json({error: "Invalid authentication information"});
 
