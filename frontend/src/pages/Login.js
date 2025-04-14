@@ -16,10 +16,12 @@ function Login() {
         setError("");
 
         axios.post("http://localhost:3001/users", data).then((response) => {
-            if (response.error) {
+            if (response.data.error) {
                 setError("An error has occured: " + response.error);
+                localStorage.setItem("accessToken", response.data);
             } else {
                 setError("User authenticated!");
+
             }
         }).catch((err) => {
             setError("An error occurred: " + err.message);

@@ -4,6 +4,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const {Users} = require("../models"); //instance of models that was created
 
+const {sign} = require('jsonwebtoken');
+
 //the route that used to create users
 router.post('/', async (req, res)=>{
     const {username, password} = req.body; //gets the object with the data to insert into the database
@@ -18,7 +20,11 @@ router.post('/', async (req, res)=>{
             if(!match)
                 return res.json({error: "Invalid authentication information"});
 
-            return res.json({success: "User is found"});
+            const accessToken = sign({
+                id: user.id,
+                username: user.username,
+            }, "importantSecret");
+            return res.json(accessToken);
         });
     }
     catch(error){
