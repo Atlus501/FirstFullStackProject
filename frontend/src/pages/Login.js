@@ -37,15 +37,15 @@ function Login() {
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form className="form">
                     <label>Enter Your Username:</label>
-                    <Field name="username" placeholder="What Username Would You Like?" className="input" />
-                    <ErrorMessage name="username" component="span" />
+                    <Field name="username" className="input" />
+                    <ErrorMessage className = "error" name="username" component="span" />
 
                     <label>Enter Your Password:</label>
-                    <Field name="password" placeholder="What Password Would You Like?" className="input" />
-                    <ErrorMessage name="password" component="span" />
+                    <Field name="password" className="input" />
+                    <ErrorMessage className = "error" name="password" component="span" />
 
                     <button type="submit">Login</button>
-                    <span>{error}</span>
+                    <span className = "error">{error}</span>
                 </Form>
             </Formik>
         </div>

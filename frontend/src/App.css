@@ -18,6 +18,7 @@
   background-color: cyan;
   border: solid 3px white;
   padding: 5px;
+  margin: 5px;
 }
 
 .navLink:hover{
@@ -34,6 +35,11 @@
   margin-inline: auto;
   border: solid 5px skyblue;
   width: 60%;
+}
+
+.error{
+  color: red;
+  font-size: 10px;
 }
 
 .input{

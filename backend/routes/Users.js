@@ -5,19 +5,43 @@ const {Users} = require("../models"); //instance of models that was created
 
 //the route that used to create users
 router.post('/', async (req, res)=>{
-    const user = req.body; //gets the object with the data to insert into the database
+    const {username, password} = req.body; //gets the object with the data to insert into the database
    
     try{
-        await Users.create(user); //creates a new object in the Posts table
-        Users.truncate();
-        return res.json(user.json());
+        const user = await Users.findOne({where:{username: username}}); //creates a new object in the Posts table
+
+        if(!user)
+            return res.json({error: "User doesn't exist!"});
+
+        bycrpyt.compare(password, user.password).then((match) => {
+            if(!match)
+                return res.json({error: "Invalid authentication information"});
+
+            return res.json({success: "User is found"});
+        });
     }
     catch(error){
-        return res.json({error: "user wasn't created"});
+        return res.json({error: "Invalid authentication infromation"});
+    }
+});//request for sending data to the database
+
+//request for registering the user into the database
+router.post("/register", async (req, res) => {
+    const {username, password} = req.body;
+
+    try{
+        bycrypt.hash(password, 10).then((hash) => {
+            Users.create({
+                username: username,
+                password: hash,
+            });
+            return res.json({success: "User is created"});
+        });
+    }
+    catch(error){
+        return res.json({error: "User wasn't created!"});
     }
 
-    
-
-});//request for sending data to the database
+});
 
 module.exports = router;
