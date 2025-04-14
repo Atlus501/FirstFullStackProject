@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from 'axios';
 import * as Yup from 'yup';
 
+//this is the function that would create the login page
 function Login() {
     const initialValues = {
         username: "",
@@ -18,7 +19,7 @@ function Login() {
             if (response.error) {
                 setError("An error has occured: " + response.error);
             } else {
-                setError("User successfully created!");
+                setError("User authenticated!");
             }
         }).catch((err) => {
             setError("An error occurred: " + err.message);
@@ -36,15 +37,15 @@ function Login() {
 
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form className="form">
-                    <label>Enter Your Username:</label>
+                    <label className = "heading">Enter Your Username:</label>
                     <Field name="username" className="input" />
                     <ErrorMessage className = "error" name="username" component="span" />
 
-                    <label>Enter Your Password:</label>
+                    <label className = "heading">Enter Your Password:</label>
                     <Field name="password" className="input" />
                     <ErrorMessage className = "error" name="password" component="span" />
 
-                    <button type="submit">Login</button>
+                    <button className = "navLink" type="submit">Login</button>
                     <span className = "error">{error}</span>
                 </Form>
             </Formik>

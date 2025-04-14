@@ -1,6 +1,7 @@
 //this is the route that is used for making operations on the users database
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const {Users} = require("../models"); //instance of models that was created
 
 //the route that used to create users
@@ -13,7 +14,7 @@ router.post('/', async (req, res)=>{
         if(!user)
             return res.json({error: "User doesn't exist!"});
 
-        bycrpyt.compare(password, user.password).then((match) => {
+        bcrpyt.compare(password, user.password).then((match) => {
             if(!match)
                 return res.json({error: "Invalid authentication information"});
 
@@ -30,7 +31,7 @@ router.post("/register", async (req, res) => {
     const {username, password} = req.body;
 
     try{
-        bycrypt.hash(password, 10).then((hash) => {
+        await bcrypt.hash(password, 10).then((hash) => {
             Users.create({
                 username: username,
                 password: hash,

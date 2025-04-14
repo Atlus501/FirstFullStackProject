@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 //this is the function that creates the account creation page
 function CreateAccount(){
-    const [createError, setCreateError] = useState("");
+    const [error, setCreateError] = useState("");
 
     const initialValues = {
         username: "",
@@ -34,15 +34,19 @@ function CreateAccount(){
 
     return(<>
         <div>
+            <h1>Create your account!</h1>
+
             <Formik initialValues = {initialValues} onSubmit = {onSubmit} validationSchema = {validationSchema}>
                 <Form className = "form">
+                    <label className = "heading">Enter your desired username:</label>
                     <Field className = "input" name = "username" placeholder="What Username Would You Like?" />
                     <ErrorMessage className = "error" name = "username" component = "span"/>
 
-                    <Field classname = "input" name = "password" placeholder="What Password Would You Like?"/>
+                    <label className = "heading">Enter your desired password:</label>
+                    <Field className = "input" name = "password" placeholder="What Password Would You Like?"/>
                     <ErrorMessage className = "error" name = "password" component = "span"/>
 
-                    <button type = "submit">Create Account</button>
+                    <button className = "navLink" type = "submit">Create Account</button>
                     <span className = "error">{error}</span>
                 </Form>
             </Formik>

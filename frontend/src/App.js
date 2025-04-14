@@ -5,6 +5,7 @@ import CreateAccount from './pages/CreateAccount'
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import './App.css';
 
+//this is the function that creates the app
 function App() {
   return (
     <div className="App">
