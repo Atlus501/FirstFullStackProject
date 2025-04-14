@@ -14,7 +14,7 @@ function Login() {
     const onSubmit = (data) => {
         setError("");
 
-        axios.post("https://localhost3001/users", data).then((response) => {
+        axios.post("http://localhost:3001/users", data).then((response) => {
             if (response.error) {
                 setError("An error has occured: " + response.error);
             } else {
@@ -37,11 +37,11 @@ function Login() {
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form className="form">
                     <label>Enter Your Username:</label>
-                    <Field id="usernameInput" name="username" placeholder="What Username Would You Like?" className="input" />
+                    <Field name="username" placeholder="What Username Would You Like?" className="input" />
                     <ErrorMessage name="username" component="span" />
 
                     <label>Enter Your Password:</label>
-                    <Field id="passwordInput" name="password" placeholder="What Password Would You Like?" className="input" />
+                    <Field name="password" placeholder="What Password Would You Like?" className="input" />
                     <ErrorMessage name="password" component="span" />
 
                     <button type="submit">Login</button>

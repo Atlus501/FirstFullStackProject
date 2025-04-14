@@ -9,11 +9,14 @@ router.post('/', async (req, res)=>{
    
     try{
         await Users.create(user); //creates a new object in the Posts table
+        Users.truncate();
         return res.json(user.json());
     }
     catch(error){
         return res.json({error: "user wasn't created"});
     }
+
+    
 
 });//request for sending data to the database
 
