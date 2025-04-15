@@ -3,8 +3,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const {Users} = require("../models"); //instance of models that was created
-
+const {validateToken} = require('../middlewares/AuthMiddleware');
 const {sign} = require('jsonwebtoken');
+
+//this is the method that would authenticate the user
+router.get("/auth", validateToken, async (req, res) => {
+    res.json(req.user);
+});
 
 //the route that used to create users
 router.post('/', async (req, res)=>{
@@ -24,7 +29,12 @@ router.post('/', async (req, res)=>{
                 id: user.id,
                 username: user.username,
             }, "importantSecret");
-            return res.json(accessToken);
+
+            return res.json({
+                token: accessToken,
+                username: username,
+                id: user.id,
+            });
         });
     }
     catch(error){

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import * as Yup from 'yup';
+import {AuthContext} from '../helpers/AuthContext';
 
 //this is the function that would create the login page
 function Login() {
+    const {authState, setAuthState} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const initialValues = {
@@ -21,10 +23,18 @@ function Login() {
         axios.post("http://localhost:3001/users", data).then((response) => {
             if (response.data.error) {
                 setError("An error has occured: " + response.error);
-                localStorage.setItem("accessToken", response.data);
+                setAuthState({username: "", id: 0, status: false});
+                sessionStorage.deleteItem("accessToken");
             } else {
                 setError("User authenticated!");
+                setAuthState({
+                    username: response.data.username,
+                    id: response.data.id,
+                    status: true,
+                });
+
                 navigate("/authed");
+                localStorage.setItem("accessToken", response.data.token);
             }
         }).catch((err) => {
             setError("An error occurred: " + err.message);
