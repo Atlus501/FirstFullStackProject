@@ -1,27 +1,22 @@
 import React, {useState, useContext} from 'react'
 import axios from 'axios'
 import {AuthContext} from '../helpers/AuthContext';
-import {Formik, Form, Field, ErrorMessage} from 'formik'
-import * as Yup from 'yup'
 
 //this is the function that will create your recipes
 function CreateRecipe(){
     const {authState} = useContext(AuthContext);
 
     const [status, setStatus] = useState("");
+    const [body, setBody] = useState("");
+    const [title, setTitle] = useState("");
 
-    const initialValues = {
-        title: "",
-        body: "",
-    }
-
-    const onSubmit = (data) =>{ 
+    const onSubmit = () =>{ 
         setStatus("");
 
         axios.post("http://localhost:3001/recipes", 
         {
-            title: data.title,
-            body: data.body,
+            title: title,
+            body: body,
             authorId: authState.id,
         }, {
             headers: {accessToken: localStorage.getItem("accessToken")}, 
@@ -33,31 +28,30 @@ function CreateRecipe(){
             setStatus("Your recipe is successfully created!");
     })};
 
-    const validationSchema = Yup.object().shape({
-        title: Yup.string().min(1).required(),
-        body: Yup.string().min(1).required(),
-    });
-
     return(<>
         <div>
             <h1>Create new recipe {authState.id}</h1>
-            <Formik initialValues = {initialValues} onSubmit = {onSubmit} validationSchema = {validationSchema}>
-                <Form className = "form">
+            <div className = "form">
 
-                    <label className = "heading">Enter the title:</label>
-                    <Field name = "title" className = "input"></Field>
-                    <ErrorMessage name = "title" className = "error" component = "span"></ErrorMessage>
+                <label className = "heading">Enter the title:</label>
+                <input className = "input" type="title" onChange={(event)=>{setTitle(event.target.value)}}></input>
 
-                    <label className = "heading">Enter the body:</label>
-                    <Field name = "body" className = "input"></Field>
-                    <ErrorMessage name = "body" className = "error" component = "span"></ErrorMessage>
+                <label className = "heading">Enter the body:</label>
+                <textarea className = "input" type="body" onChange={(event)=>{setBody(event.target.value)}}></textarea>
 
-                    <button type = "submit" className = "navLink">Create recipe</button>
-                    <span className = "error">{status}</span>
-                </Form>
-            </Formik>
+                <button onClick = {onSubmit} className = "navLink">Create recipe</button>
+                <span className = "error">{status}</span>
+            </div>
         </div>
     </>);
 }
+
+/**
+ *         body: Yup.string().min(1).required(),
+ *         body: "",
+ *             body: data.body,
+                    <Field name = "body" className = "input"></Field>
+                    <ErrorMessage name = "body" className = "error" component = "span"></ErrorMessage>
+ */
 
 export default CreateRecipe
