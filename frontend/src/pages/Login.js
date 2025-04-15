@@ -22,19 +22,19 @@ function Login() {
 
         axios.post("http://localhost:3001/users", data).then((response) => {
             if (response.data.error) {
-                setError("An error has occured: " + response.error);
+                setError("An error has occured: " + response.data.error);
                 setAuthState({username: "", id: 0, status: false});
-                sessionStorage.deleteItem("accessToken");
+                sessionStorage.removeItem("accessToken");
             } else {
                 setError("User authenticated!");
+        
+                navigate("/authed");
+                localStorage.setItem("accessToken", response.data.token);
                 setAuthState({
                     username: response.data.username,
                     id: response.data.id,
                     status: true,
                 });
-
-                navigate("/authed");
-                localStorage.setItem("accessToken", response.data.token);
             }
         }).catch((err) => {
             setError("An error occurred: " + err.message);

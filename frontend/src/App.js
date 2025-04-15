@@ -35,7 +35,7 @@ function App() {
       }
       setAuthState({...authState, status: false});
     });
-  }, [authState]);
+  }, []);
 
   return (
     <div className="App">
