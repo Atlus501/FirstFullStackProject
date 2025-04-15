@@ -7,7 +7,7 @@ import {AuthContext} from '../helpers/AuthContext';
 
 //this is the function that would create the login page
 function Login() {
-    const {authState, setAuthState} = useContext(AuthContext);
+    const {setAuthState} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const initialValues = {
@@ -24,7 +24,7 @@ function Login() {
             if (response.data.error) {
                 setError("An error has occured: " + response.data.error);
                 setAuthState({username: "", id: 0, status: false});
-                sessionStorage.removeItem("accessToken");
+                localStorage.removeItem("accessToken");
             } else {
                 setError("User authenticated!");
         

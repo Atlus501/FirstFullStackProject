@@ -18,19 +18,19 @@ function CreateRecipe(){
     const onSubmit = (data) =>{ 
         setStatus("");
 
-        axios.post("http://localhost:3001/recipe", {
-            headers: {accessToken: sessionStorage.getItem("accessToken")},
-        },  {
+        axios.post("http://localhost:3001/recipes", 
+        {
             title: data.title,
             body: data.body,
-            authId: authState.id,
+            authorId: authState.id,
+        }, {
+            headers: {accessToken: localStorage.getItem("accessToken")}, 
         }).then((response) => {
-        if(response.body.error){
-            setStatus("An error occured:" + response.body.error);
-            return;
-        }
-
-        setStatus("Your recipe is successfully created!");
+            if(response.error){
+                setStatus("An error occured:" + response.error);
+                return;
+            }
+            setStatus("Your recipe is successfully created!");
     })};
 
     const validationSchema = Yup.object().shape({
@@ -40,17 +40,17 @@ function CreateRecipe(){
 
     return(<>
         <div>
-            <h1>Create new recipe {authState.username}</h1>
+            <h1>Create new recipe {authState.id}</h1>
             <Formik initialValues = {initialValues} onSubmit = {onSubmit} validationSchema = {validationSchema}>
                 <Form className = "form">
 
                     <label className = "heading">Enter the title:</label>
                     <Field name = "title" className = "input"></Field>
-                    <ErrorMessage name = "title" className = "error"></ErrorMessage>
+                    <ErrorMessage name = "title" className = "error" component = "span"></ErrorMessage>
 
                     <label className = "heading">Enter the body:</label>
                     <Field name = "body" className = "input"></Field>
-                    <ErrorMessage name = "body" className = "error"></ErrorMessage>
+                    <ErrorMessage name = "body" className = "error" component = "span"></ErrorMessage>
 
                     <button type = "submit" className = "navLink">Create recipe</button>
                     <span className = "error">{status}</span>
