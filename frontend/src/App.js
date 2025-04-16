@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Login from './pages/Login'
 import CreateAccount from './pages/CreateAccount'
 import CreateRecipe from './pages/CreateRecipe'
+import SelectRecipe from './pages/SelectRecipe'
 import {AuthContext} from './helpers/AuthContext'
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import './App.css';
@@ -61,6 +62,7 @@ function App() {
           <Route path = "/createAccount" element = {<CreateAccount/>}/>
           <Route path = "/authed" element = {<CreateRecipe/>}/>
           <Route path = "/authed/search" element = {<FindRecipes/>}/>
+          <Route path = "/authed/search/:id" element = {<SelectRecipe/>}/>
         </Routes>
       </Router>
       </AuthContext.Provider>

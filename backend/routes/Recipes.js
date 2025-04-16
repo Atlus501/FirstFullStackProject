@@ -35,6 +35,28 @@ router.get("/search", async (req, res) => {
     }
 });
 
+router.get("/search/your", async (req, res) =>{
+    
+});
+
+//request for getting a specific recipe
+router.get("/search/id/:id", async (req, res)=>{
+
+    const id = req.params.id;
+
+    try{
+        const recipe = await Recipes.findByPk(id);
+
+        if(!recipe)
+            return res.json({error: "Recipe not found"});
+
+        return res.json(recipe);
+    }
+    catch(error){
+        return res.json({error: error});
+    }
+});
+
 //request for posting the recipe
 router.post("/", validateToken, async (req, res) => {
 
