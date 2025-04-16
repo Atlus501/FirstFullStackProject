@@ -62,7 +62,6 @@ function App() {
           <Route path = "/authed" element = {<CreateRecipe/>}/>
           <Route path = "/authed/search" element = {<FindRecipes/>}/>
         </Routes>
-
       </Router>
       </AuthContext.Provider>
     </div>

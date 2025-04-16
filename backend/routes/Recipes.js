@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Recipes} = require("../models");
+const {Op} = require('sequelize');
 
 const {validateToken} = require("../middlewares/AuthMiddleware");
 
@@ -14,6 +15,24 @@ router.get("/", async (req,res) =>{
         return res.json({error: "The database is empty"});
 
     return res.json(recipes);
+});
+
+//request for getting specific recipes with titles
+router.get("/search", async (req, res) => {
+    const {title} = req.query;
+
+    try{
+        const recipes = await Recipes.findAll({
+            where:{
+                title: {[Op.like]: '%'+title+'%'},
+            }
+        });
+
+        return res.json(recipes);
+    }
+    catch(error){
+        return res.json({error: error});
+    }
 });
 
 //request for posting the recipe
