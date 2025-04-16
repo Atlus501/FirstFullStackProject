@@ -6,6 +6,7 @@ import {AuthContext} from './helpers/AuthContext'
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import './App.css';
 import axios from 'axios';
+import FindRecipes from './pages/FindRecipes'
 
 //this is the function that creates the app
 function App() {
@@ -49,6 +50,7 @@ function App() {
             </>) : (<>
               <Link to = "/authed" className = "navLink">Create Recipe</Link>
               <Link to = "/" className = "navLink" onClick = {logout}>Logout</Link>
+              <Link to = "/authed/search" className = "navLink">Find Recipes</Link>
             </>
         )
           }
@@ -58,6 +60,7 @@ function App() {
           <Route path = "/" element = {<Login/>}/>
           <Route path = "/createAccount" element = {<CreateAccount/>}/>
           <Route path = "/authed" element = {<CreateRecipe/>}/>
+          <Route path = "/authed/search" element = {<FindRecipes/>}/>
         </Routes>
 
       </Router>

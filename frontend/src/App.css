@@ -38,7 +38,15 @@
   flex-direction: column;
   margin-inline: auto;
   border: solid 5px skyblue;
+  margin-bottom: 10px;
   width: 60%;
+}
+
+.limit{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
 }
 
 .error{

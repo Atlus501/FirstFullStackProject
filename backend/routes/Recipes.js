@@ -6,11 +6,11 @@ const {validateToken} = require("../middlewares/AuthMiddleware");
 
 //request for getting 10 first recipes
 router.get("/", async (req,res) =>{
-    const recipes = Recipes.findAll({
+    const recipes = await Recipes.findAll({
         limit: 15,
     });
 
-    if(recipes.length() == 0)
+    if(recipes.length === 0)
         return res.json({error: "The database is empty"});
 
     return res.json(recipes);

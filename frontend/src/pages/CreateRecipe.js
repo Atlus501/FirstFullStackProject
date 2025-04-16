@@ -46,12 +46,4 @@ function CreateRecipe(){
     </>);
 }
 
-/**
- *         body: Yup.string().min(1).required(),
- *         body: "",
- *             body: data.body,
-                    <Field name = "body" className = "input"></Field>
-                    <ErrorMessage name = "body" className = "error" component = "span"></ErrorMessage>
- */
-
 export default CreateRecipe
