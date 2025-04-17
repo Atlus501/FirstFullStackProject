@@ -33,11 +33,9 @@ function FindRecipes(){
         </div>
 
         <div>
-            {recipes.map((value, key)=>{
-
-                if(value.error){
-                    setError(value.error);
-                    return<></>;}
+            {
+            (recipes.length === 0) ? (<span>There aren't any recipes</span>) : (
+                recipes.map((value, key)=>{
 
                 return(
                 <div key={key} className = "form">
@@ -45,7 +43,7 @@ function FindRecipes(){
                     <p className = "limit">{value.body}</p>
                     <button className = "navLink" onClick = {() => {navigate('/authed/search/'+value.id)}}>Open</button>
                 </div>);
-            })}
+            }))}
         </div>
     </>);
 }

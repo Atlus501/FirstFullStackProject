@@ -21,8 +21,8 @@ function CreateRecipe(){
         }, {
             headers: {accessToken: localStorage.getItem("accessToken")}, 
         }).then((response) => {
-            if(response.error){
-                setStatus("An error occured:" + response.error);
+            if(response.data.error){
+                setStatus("An error occured:" + response.data.error);
                 return;
             }
             setStatus("Your recipe is successfully created!");
@@ -37,7 +37,7 @@ function CreateRecipe(){
                 <input className = "input" type="title" onChange={(event)=>{setTitle(event.target.value)}}></input>
 
                 <label className = "heading">Enter the body:</label>
-                <textarea className = "input" type="body" onChange={(event)=>{setBody(event.target.value)}}></textarea>
+                <textarea className = "input" id = "body" type="body" onChange={(event)=>{setBody(event.target.value)}}></textarea>
 
                 <button onClick = {onSubmit} className = "navLink">Create recipe</button>
                 <span className = "error">{status}</span>

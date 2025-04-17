@@ -54,6 +54,10 @@
   font-size: 14px;
 }
 
+#body{
+  height: 300px;
+}
+
 .input{
   width: 75%;
   font-size: 14px;

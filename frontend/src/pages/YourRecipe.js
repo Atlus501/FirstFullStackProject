@@ -17,21 +17,30 @@ function YourRecipe(){
             }
             setRecipes(response.data);
         });
-    }, []);
+    }, []);    
 
     return(<>
         <div>
             <h1>Here are your recipes</h1>
-            {
+            {(recipes.length === 0) ? (<span className = "error">There are no recipes</span>) :(
+
                 recipes.map((value, key)=>{
                     
                     return(<div className = "form" key = {key}>
                         <h3 className = "heading">{value.title}</h3>
                         <p>{value.body}</p>
+
+                        <div>
                         <button className = "navLink" onClick = {() => {navigate('/authed/search/'+value.id)}}>Open</button>
-                    </div>);
+                        <button className = "navLink" onClick = {() => {
+
+                            axios.delete('http://localhost:3001/recipes/delete', {params: {id: value.id}}).then(()=>{
+                            setRecipes(recipes.filter((val)=>{return val.id !== value.id}))});
+                        }}>Delete</button>
+                        </div>
+                    </div>)
                 })
-            }
+            )}
         </div>
     </>);
 }

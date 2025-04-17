@@ -11,9 +11,6 @@ router.get("/", async (req,res) =>{
         limit: 15,
     });
 
-    if(recipes.length === 0)
-        return res.json({error: "The database is empty"});
-
     return res.json(recipes);
 });
 
@@ -44,9 +41,6 @@ router.get("/search/your", async (req, res) =>{
             where:{authorId: userId},
         });
 
-        if(recipes.length === 0)
-            return res.json({error: "recipes not found"});
-
         return res.json(recipes);
     }
     catch(error){
@@ -66,6 +60,23 @@ router.get("/search/id/:id", async (req, res)=>{
             return res.json({error: "Recipe not found"});
 
         return res.json(recipe);
+    }
+    catch(error){
+        return res.json({error: error});
+    }
+});
+
+//request for deleting a post
+router.delete("/delete", async(req, res)=>{
+
+    const {id} = req.query;
+
+    try{
+        await Recipes.destroy({
+            where: {id: id}
+        });
+
+        return res.json({success: "the recipe is deleted"});
     }
     catch(error){
         return res.json({error: error});
