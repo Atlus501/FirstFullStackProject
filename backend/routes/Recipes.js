@@ -35,8 +35,23 @@ router.get("/search", async (req, res) => {
     }
 });
 
+//REST request for getting your recipes
 router.get("/search/your", async (req, res) =>{
-    
+    const {userId} = req.query;
+
+    try{
+        const recipes = await Recipes.findAll({
+            where:{authorId: userId},
+        });
+
+        if(recipes.length === 0)
+            return res.json({error: "recipes not found"});
+
+        return res.json(recipes);
+    }
+    catch(error){
+        return res.json({error: error});
+    }
 });
 
 //request for getting a specific recipe
