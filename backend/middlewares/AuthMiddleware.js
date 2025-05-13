@@ -6,17 +6,21 @@ const validateToken = (req, res, next) => {
     const accessToken = req.header("accessToken");
 
     if(!accessToken){
-        return res.json({error: "Invalid user data!"});
+        return res.status(404).json({error: "Invalid user data!"});
     }
 
     try{
         const validToken = verify(accessToken, "importantSecret");
     
-        if(validToken)
+        if(validToken){
+            req.user = validToken;
             return next();
+        }
+
+        return res.status(404).json({error: "Invalid user data!"});
         
     }catch(err){
-        return res.json({error: err});
+        return res.status(404).json({error: err});
     }
 }
 

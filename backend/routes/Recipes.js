@@ -48,6 +48,26 @@ router.get("/search/your", async (req, res) =>{
     }
 });
 
+//REST rquest for getting specific recipes
+router.get("/search/your/specific", async (req, res)=>{
+    const {authorId, title} = req.query;
+
+    try{
+        const recipe = await Recipes.findAll({
+            where:{
+                authorId: authorId, 
+                title: {[Op.like]: '%'+title+'%'}}
+        });
+
+        if(!recipe)
+            return res.json({error: "This recipe isn't found"});
+
+        return res.json(recipe);
+    }catch(error){
+        return res.json({error: error});
+    }
+});
+
 //request for getting a specific recipe
 router.get("/search/id/:id", async (req, res)=>{
 

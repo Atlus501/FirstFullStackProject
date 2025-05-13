@@ -8,6 +8,7 @@ const {sign} = require('jsonwebtoken');
 
 //this is the method that would authenticate the user
 router.get("/auth", validateToken, async (req, res) => {
+
     res.json(req.user);
 });
 
