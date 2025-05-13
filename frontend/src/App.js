@@ -4,6 +4,7 @@ import CreateAccount from './pages/CreateAccount'
 import CreateRecipe from './pages/CreateRecipe'
 import SelectRecipe from './pages/SelectRecipe'
 import YourRecipe from './pages/YourRecipe'
+import EditRecipePage from './pages/EditRecipePage'
 import {AuthContext} from './helpers/AuthContext'
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
 import './App.css';
@@ -65,7 +66,8 @@ function App() {
           <Route path = "/authed" element = {<CreateRecipe/>}/>
           <Route path = "/authed/search" element = {<FindRecipes/>}/>
           <Route path = "/authed/search/:id" element = {<SelectRecipe/>}/>
-          <Route path = "authed/your" className = "navLink" element = {<YourRecipe/>}/>
+          <Route path = "/authed/your" className = "navLink" element = {<YourRecipe/>}/>
+          <Route path = "/authed/edit/:id" element = {<EditRecipePage/>}/>
         </Routes>
       </Router>
       </AuthContext.Provider>

@@ -33,10 +33,14 @@ function YourRecipe(){
                         <div>
                         <button className = "navLink" onClick = {() => {navigate('/authed/search/'+value.id)}}>Open</button>
                         <button className = "navLink" onClick = {() => {
-
                             axios.delete('http://localhost:3001/recipes/delete', {params: {id: value.id}}).then(()=>{
                             setRecipes(recipes.filter((val)=>{return val.id !== value.id}))});
                         }}>Delete</button>
+
+                        <button className = "navLink" onClick = {()=>{
+                            navigate('/authed/edit/'+value.id)
+                        }}>Edit</button>
+
                         </div>
                     </div>)
                 })
