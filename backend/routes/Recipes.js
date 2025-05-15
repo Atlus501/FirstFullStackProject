@@ -109,20 +109,22 @@ router.put("/:id", validateToken, async(req,res)=>{
     const {authorId, title, body} = req.body;
 
     try{
-        const recipe = await Recipes.findOne({
-            where:{
-                id: id,
-                authorId: authorId,
-            }
-        });
+        // const recipe = await Recipes.findOne({
+        //     where:{
+        //         id: id,
+        //         authorId: authorId,
+        //     }
+        // });
 
-        if(!recipe)
-            return res.json({error: "There is no such recipe"});
+        // if(!recipe)
+        //     return res.json({error: "There is no such recipe"});
 
-        recipe.title = title;
-        recipe.body = body;
+        // recipe.title = title;
+        // recipe.body = body;
 
-        await recipe.save();
+        await Recipes.update({title: title, body: body}, {where: {id: id, authorId: authorId}});
+
+        // await recipe.save();
 
         return res.json({success: "Recipe has been updated successfully!"});
 

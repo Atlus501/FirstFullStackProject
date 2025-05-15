@@ -13,15 +13,23 @@ module.exports = (sequelize, DataTypes) =>{
     }); 
     
     Users.associate = (models) =>{
-    Users.hasMany(models.Recipes, {
-        onDelete: "cascade",
+        Users.hasMany(models.Recipes, {
+            onDelete: "cascade",
 
-        foreignKey:{
-            name: 'authorId',
-            type: DataTypes.INTEGER,
-        },
-
+            foreignKey:{
+                name: 'authorId',
+                type: DataTypes.INTEGER,
+            },
         });
+
+        Users.hasMany(models.Ratings, {
+            onDelete: "cascade",
+
+            foreignKey:{
+                name: "raterId",
+                type: DataTypes.INTEGER,
+            }
+        })
     };
 
     return Users;
