@@ -1,190 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const {Recipes, Users, Ratings} = require("../models");
+const {Recipes} = require("../models");
 const {Op} = require('sequelize');
-
 const {validateToken} = require("../middlewares/AuthMiddleware");
-
-//function used to merge recipes with their usernames
-const matchUsername = async (recipes) => {
-// Extract author IDs
-    const authorIds = recipes.map(recipe => recipe.authorId);
-
-    // Fetch usernames separately
-    const users = await Users.findAll({
-        where: { id: authorIds },
-        attributes: ["id", "username"]
-    });
-
-    // Merge usernames into recipes
-    const result = recipes.map(recipe => ({
-        ...recipe.toJSON(),
-        username: users.find(user => user.id === recipe.authorId)?.username || "Unknown"
-    }));
-    return result;
-};
+const {getRecipes, getSpecRecipes, getUserRecipes,
+    getYourSpecRecipe, getSpecRecipesById, deleteRecipe, updateRecipe, createRecipe
+} = require("../controllers/RecipeControls");
 
 //request for getting 10 first recipes
-router.get("/", async (req,res) =>{
-    const recipes = await Recipes.findAll({
-        limit: 15,
-    });
-
-    const recipesWithUsernames = await matchUsername(recipes);
-
-    return res.json(recipesWithUsernames);
-});
+router.get("/", getRecipes);
 
 //request for getting specific recipes with titles
-router.get("/search", async (req, res) => {
-    const {title} = req.query;
-
-    try{
-        const recipes = await Recipes.findAll({
-            where:{
-                title: {[Op.like]: '%'+title+'%'},
-            }
-        });
-
-        return res.json(recipes);
-    }
-    catch(error){
-        return res.json({error: error});
-    }
-});
+router.get("/search", getSpecRecipes);
 
 //REST request for getting your recipes
-router.get("/search/your", async (req, res) =>{
-    const {userId} = req.query;
-
-    try{
-        const recipes = await Recipes.findAll({
-            where:{authorId: userId},
-        });
-
-        return res.json(recipes);
-    }
-    catch(error){
-        return res.json({error: error});
-    }
-});
+router.get("/search/your", getUserRecipes);
 
 //REST rquest for getting specific recipes
-router.get("/search/your/specific", async (req, res)=>{
-    const {authorId, title} = req.query;
-
-    try{
-        const recipe = await Recipes.findAll({
-            where:{
-                authorId: authorId, 
-                title: {[Op.like]: '%'+title+'%'}}
-        });
-
-        if(!recipe)
-            return res.json({error: "This recipe isn't found"});
-
-        return res.json(recipe);
-    }catch(error){
-        return res.json({error: error});
-    }
-});
+router.get("/search/your/specific", getYourSpecRecipe);
 
 //request for getting a specific recipe
-router.get("/search/id/:id", async (req, res)=>{
-
-    const id = req.params.id;
-
-    try{
-        const recipe = await Recipes.findByPk(id);
-
-        if(!recipe)
-            return res.json({error: "Recipe not found"});
-
-        return res.json(recipe);
-    }
-    catch(error){
-        return res.json({error: error});
-    }
-});
+router.get("/search/id/:id", getSpecRecipesById);
 
 //request for deleting a post
-router.delete("/delete", async(req, res)=>{
-
-    const {id} = req.query;
-
-    try{
-        await Recipes.destroy({
-            where: {id: id}
-        });
-
-        return res.json({success: "the recipe is deleted"});
-    }
-    catch(error){
-        return res.json({error: error});
-    }
-});
+router.delete("/delete", deleteRecipe);
 
 //REST request for editing the body of a recipe
-router.put("/:id", validateToken, async(req,res)=>{
-    const id = req.params.id;
-    const {authorId, title, body} = req.body;
-
-    try{
-        // const recipe = await Recipes.findOne({
-        //     where:{
-        //         id: id,
-        //         authorId: authorId,
-        //     }
-        // });
-
-        // if(!recipe)
-        //     return res.json({error: "There is no such recipe"});
-
-        // recipe.title = title;
-        // recipe.body = body;
-
-        await Recipes.update({title: title, body: body}, {where: {id: id, authorId: authorId}});
-
-        // await recipe.save();
-
-        return res.json({success: "Recipe has been updated successfully!"});
-
-    }catch(error){
-        return res.json({error: "An error has occured!" + error});
-    }
-
-});
+router.put("/:id", validateToken, updateRecipe);
 
 //request for posting the recipe
-router.post("/", validateToken, async (req, res) => {
-
-    try{
-        const {title, authorId, body} = req.body;
-
-        const exist = await Recipes.findOne({
-            where:{
-                title: title,
-                authorId: authorId,
-            }
-        });
-
-        if(exist)
-            return res.json({error: "This recipe already exists!"});
-
-        const recipe = await Recipes.create({
-            title: title,
-            authorId: authorId,
-            body: body,
-        });
-
-        if(recipe)
-            return res.json({success: "recipe has been created"});
-
-        return res.json({error: "recipe wasn't created"});
-    }
-    catch(er){
-        return res.json({error: "something went wrong"});
-    }
-});
+router.post("/", validateToken, createRecipe);
 
 module.exports = router;
