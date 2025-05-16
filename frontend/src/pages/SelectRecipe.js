@@ -6,7 +6,7 @@ import {useParams} from 'react-router-dom'
 function SelectRecipe(){
 
     let {id} = useParams();
-    const [recipe, setRecipe] = useState({});
+    const [recipe, setRecipe] = useState(null);
     const [error, setError] = useState("");
     const [rating, setRating] = useState(0);
 
@@ -26,10 +26,10 @@ function SelectRecipe(){
 
     return(<>
     <div className = "form">
-        <h1>{recipe.title}</h1>
-        <h3 className = "heading">Author:</h3>
+        <h1>{recipe?.title || "Loading..."}</h1>
+        <h3 className = "heading">Author: {recipe?.username || "Loading..."}</h3>
         
-        <p>{recipe.body}</p>
+        <p>{recipe?.body || "Loading..."}</p>
         <span className = "error">{error}</span>
     </div>
 

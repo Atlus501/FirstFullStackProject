@@ -1,5 +1,6 @@
 const {Recipes} = require("../models");
-const {matchUsername} = require("../utility/matchUsername")
+const {matchUsername, matchUserSingle} = require("../utility/matchUsername");
+const {Op} = require('sequelize');
 
 //function for getting 15 recipes
 const getRecipes = async (req,res) =>{
@@ -68,15 +69,15 @@ const getYourSpecRecipe = async (req, res)=>{
 //function for getting speciifc recipes by their id
 const getSpecRecipesById = async (req, res)=>{
 
-    const id = req.params.id;
-
     try{
-        const recipe = await Recipes.findByPk(id);
+        const recipe = await Recipes.findByPk(req.params.id);
 
         if(!recipe)
             return res.json({error: "Recipe not found"});
 
-        return res.json(recipe);
+        const result = await matchUserSingle(recipe);
+
+        return res.json(result);
     }
     catch(error){
         return res.json({error: error});

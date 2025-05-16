@@ -23,4 +23,21 @@ const matchUsername = async (recipes) => {
     return result;
 };
 
-module.exports = {matchUsername}
+//function used to merge recipes with their usernames
+const matchUserSingle = async (recipe) => {
+
+    if(!recipe)
+        return null;
+
+// Extract author IDs
+    const authorId = recipe.authorId;
+
+    // Fetch usernames separately
+    const user = await Users.findByPk(authorId, {attributes: ["username"]});
+
+    // Merge usernames into recipes
+    const result = {...recipe.toJSON(), username: user?.username || "unknown"};
+    return result;
+};
+
+module.exports = {matchUsername, matchUserSingle}

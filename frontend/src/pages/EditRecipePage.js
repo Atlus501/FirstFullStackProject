@@ -48,7 +48,7 @@ function EditRecipePage(){
 
     return(<>
         <div>
-            <h1>Update an existing recipe {authState.id}</h1>
+            <h1>Update An Existing Recipe</h1>
             <div className = "form">
 
                 <label className = "heading">Enter the title:</label>
@@ -57,7 +57,7 @@ function EditRecipePage(){
                 <label className = "heading">Enter the body:</label>
                 <textarea className = "input" value = {body} id = "body" type="body" onChange={(event)=>{setBody(event.target.value)}}></textarea>
 
-                <button onClick = {onSubmit} className = "navLink">Create recipe</button>
+                <button onClick = {onSubmit} className = "navLink">Save Changes</button>
                 <span className = "error">{status}</span>
             </div>
         </div>

@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {Recipes} = require("../models");
-const {Op} = require('sequelize');
 const {validateToken} = require("../middlewares/AuthMiddleware");
-const {getRecipes, getSpecRecipes, getUserRecipes,
-    getYourSpecRecipe, getSpecRecipesById, deleteRecipe, updateRecipe, createRecipe
+
+const {getRecipes, getSpecRecipes, getUserRecipes, getYourSpecRecipe, getSpecRecipesById, deleteRecipe, updateRecipe, createRecipe
 } = require("../controllers/RecipeControls");
 
 //request for getting 10 first recipes
