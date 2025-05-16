@@ -16,6 +16,9 @@ app.use("/users", userRouter);
 const recipeRouter = require('./routes/Recipes');
 app.use("/recipes", recipeRouter);
 
+const ratingRouter = require('./router/Ratings');
+app.use("/ratings", ratingRouter);
+
 //this is the function that makes the models in the database
 
 

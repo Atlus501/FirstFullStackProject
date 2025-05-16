@@ -27,7 +27,6 @@ function SelectRecipe(){
     return(<>
     <div className = "form">
         <h1 className = "heading">{recipe.title}</h1>
-        <p>Recipe Rating: {recipe && recipe.numRating > 0 ? recipe.totalRating / recipe.numRating : 0} / 5</p>
 
         <div>
             <select

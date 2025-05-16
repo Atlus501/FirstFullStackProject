@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.INTEGER,
         },
+
+        comment:{
+            type: DataTypes.STRING,
+        }
     });
 
     return Ratings;

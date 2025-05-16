@@ -9,14 +9,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-
-        totalRating:{
-            type: DataTypes.INTEGER,
-        },
-        
-        numRating:{
-            type: DataTypes.INTEGER,
-        }
     });
 
     Recipes.associate = (models)=>{
