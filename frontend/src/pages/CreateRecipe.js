@@ -30,7 +30,7 @@ function CreateRecipe(){
 
     return(<>
         <div>
-            <h1>Create new recipe {authState.id}</h1>
+            <h1>Create New Recipe</h1>
             <div className = "form">
 
                 <label className = "heading">Enter the title:</label>

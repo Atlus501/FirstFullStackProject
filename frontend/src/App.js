@@ -26,17 +26,21 @@ function App() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:3001/users/auth", {headers: {
-      accessToken: localStorage.getItem("accessToken")}}).then((response) => {
+
+    const token = localStorage.getItem("accessToken");
+
+    if(token)
+      axios.get("http://localhost:3001/users/auth", {headers: {
+        accessToken: token}}).then((response) => {
       
-      if(!response.data.error){
-        setAuthState({
-          username: response.data.username,
-          id: response.data.id,
-          status: true,
-        });
-        return;
-      }
+        if(!response.data.error){
+          setAuthState({
+            username: response.data.username,
+            id: response.data.id,
+            status: true,
+          });
+            return;
+          }
       setAuthState({...authState, status: false});
     });
   }, []);

@@ -26,9 +26,15 @@ function SelectRecipe(){
 
     return(<>
     <div className = "form">
-        <h1 className = "heading">{recipe.title}</h1>
+        <h1>{recipe.title}</h1>
+        <h3 className = "heading">Author:</h3>
+        
+        <p>{recipe.body}</p>
+        <span className = "error">{error}</span>
+    </div>
 
-        <div>
+    <div className = "form">
+        <h2 className = "heading">Would you like to give this recipe a rating?</h2>
             <select
                 id = "ratings"
                 value = {rating}
@@ -44,12 +50,8 @@ function SelectRecipe(){
                 <option value = "5">5</option>
 
             </select>
-            <button>Rate</button>
+            <button className = "navLink">Rate</button>
         </div>
-        
-        <p>{recipe.body}</p>
-        <span className = "error">{error}</span>
-    </div>
     </>);
 };
 

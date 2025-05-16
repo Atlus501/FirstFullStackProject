@@ -1,9 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const {Recipes} = require("../models");
+const {Recipes, Users, Ratings} = require("../models");
 const {Op} = require('sequelize');
 
 const {validateToken} = require("../middlewares/AuthMiddleware");
+
+//function used to merge recipes with their usernames
+const matchUsername = async (recipes) => {
+// Extract author IDs
+    const authorIds = recipes.map(recipe => recipe.authorId);
+
+    // Fetch usernames separately
+    const users = await Users.findAll({
+        where: { id: authorIds },
+        attributes: ["id", "username"]
+    });
+
+    // Merge usernames into recipes
+    const result = recipes.map(recipe => ({
+        ...recipe.toJSON(),
+        username: users.find(user => user.id === recipe.authorId)?.username || "Unknown"
+    }));
+    return result;
+};
 
 //request for getting 10 first recipes
 router.get("/", async (req,res) =>{
@@ -11,7 +30,9 @@ router.get("/", async (req,res) =>{
         limit: 15,
     });
 
-    return res.json(recipes);
+    const recipesWithUsernames = await matchUsername(recipes);
+
+    return res.json(recipesWithUsernames);
 });
 
 //request for getting specific recipes with titles

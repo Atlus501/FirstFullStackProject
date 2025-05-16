@@ -62,4 +62,20 @@ router.post("/register", async (req, res) => {
 
 });
 
+//REST request for getting the username by id
+router.get("/", async (req, res)=>{
+    const {id} = req.query;
+
+    try{
+        const user = await Users.findByPk(id);
+
+        if(user)
+            return res.json({error: "User id isn't valid!"});
+
+        return res.json(user);
+    }catch(error){
+        return res.json({error: "User id isn't valid!"});
+    }
+})
+
 module.exports = router;

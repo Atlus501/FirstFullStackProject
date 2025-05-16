@@ -107,4 +107,4 @@ router.put("/:id", async(req, res) => {
     }
 });
 
-modules.exports = router;
+module.exports = router;
