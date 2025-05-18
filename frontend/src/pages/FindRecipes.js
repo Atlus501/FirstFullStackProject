@@ -41,6 +41,7 @@ function FindRecipes(){
                 <div key={key} className = "form">
                     <h3 className = "heading">{value.title}</h3>
                     <h3 className = "heading">Author: {value.username}</h3>
+                    <h3 className = "heading">Rating: {value.averageRating}</h3>
                     <p className = "limit">{value.body}</p>
                     <button className = "navLink" onClick = {() => {navigate('/authed/search/'+value.id)}}>Open</button>
                 </div>);

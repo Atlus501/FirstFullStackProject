@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {getRatings, getAverage, createRating, deleteRating, updateRating} = require('../controllers')
+const {getRatings, getAverage, createRating, deleteRating, updateRating} = require('../controllers/RatingControls')
 
 //REST request for getting the first few ratings
 router.get("/", getRatings);

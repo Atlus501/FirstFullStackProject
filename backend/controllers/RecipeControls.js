@@ -1,5 +1,6 @@
 const {Recipes} = require("../models");
 const {matchUsername, matchUserSingle} = require("../utility/matchUsername");
+const {matchRating} = require('../utility/matchRating')
 const {Op} = require('sequelize');
 
 //function for getting 15 recipes
@@ -9,7 +10,10 @@ const getRecipes = async (req,res) =>{
     });
 
     const recipesWithUsernames = await matchUsername(recipes);
-    return res.json(recipesWithUsernames);
+    const finalRecipes = await matchRating(recipesWithUsernames);
+
+    //return res.json(recipesWithUsernames);
+    return res.json(finalRecipes);
 };
 
 //function gor getting specific recipes
