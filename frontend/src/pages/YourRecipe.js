@@ -59,6 +59,7 @@ function YourRecipe(){
                     
                     return(<div className = "form" key = {key}>
                         <h3 className = "heading">{value.title}</h3>
+                        <h3 className = "heading">Rating: {value.averageRating}</h3>
                         <p>{value.body}</p>
 
                         <div>

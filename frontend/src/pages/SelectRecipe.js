@@ -1,6 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import axios from 'axios'
 import {useParams} from 'react-router-dom'
+import {AuthContext} from '../helpers/AuthContext'
+import {Form, Formik, ErrorMessage, Field} from 'formik'
+import * as Yup from 'yup'
 
 //this is the function that would create the page once he selects the recipe
 function SelectRecipe(){
@@ -8,7 +11,37 @@ function SelectRecipe(){
     let {id} = useParams();
     const [recipe, setRecipe] = useState(null);
     const [error, setError] = useState("");
-    const [rating, setRating] = useState(0);
+    const [result, setResult] = useState("");
+
+    const {authState} = useContext(AuthContext);
+
+    const initialValues = {
+        value: 0,
+        comment: "",
+    }
+
+    const onSubmit = (data) => {
+        axios.post('http://localhost:3001/ratings', {
+            recipeId: id,
+            raterId: authState.id,
+            value: data.value,
+            comment: data.comment,
+        }).then((response) => {
+            if(response.data.error){
+                setResult("An error occured! " + response.error);
+                return;
+            }
+
+            setResult("You've Successfully Rated the Recipe!")
+        }
+        ).catch(error => setResult("A problem occured! "+error));
+
+    };
+
+    const validationSchema = Yup.object().shape({
+        value: Yup.number(),
+        comment: Yup.string().max(200).trim(),
+    });
 
     useEffect(() => {
         axios.get('http://localhost:3001/recipes/search/id/'+id).then((response)=>{
@@ -28,30 +61,34 @@ function SelectRecipe(){
     <div className = "form">
         <h1>{recipe?.title || "Loading..."}</h1>
         <h3 className = "heading">Author: {recipe?.username || "Loading..."}</h3>
+        <h3 className = "heading">Rating: {recipe?.averageRating || "Loading..."}</h3>
         
         <p>{recipe?.body || "Loading..."}</p>
         <span className = "error">{error}</span>
     </div>
 
-    <div className = "form">
-        <h2 className = "heading">Would you like to give this recipe a rating?</h2>
-            <select
-                id = "ratings"
-                value = {rating}
-                onChange = {(event) => {
-                    setRating(parseInt(event.target.value))
-                }}>
+    <div>
+        <Formik initialValues = {initialValues} onSubmit = {onSubmit} validationSchema = {validationSchema}>
+            <Form className = "form">
+                <label className = "heading">Rate the Recipe From 0 to 5</label>
+                <Field as="select" name = "value">
+                    <option value = "0">0</option>
+                    <option value = "1">1</option>
+                    <option value = "2">2</option>
+                    <option value = "3">3</option>
+                    <option value = "4">4</option>
+                    <option value = "5">5</option>
+                </Field>
+                <ErrorMessage className = "error" name = "value" component = "span"></ErrorMessage>
 
-                <option value = "0">0</option>
-                <option value = "1">1</option>
-                <option value = "2">2</option>
-                <option value = "3">3</option>
-                <option value = "4">4</option>
-                <option value = "5">5</option>
-
-            </select>
-            <button className = "navLink">Rate</button>
-        </div>
+                <label className = "heading">Would you like to leave a comment as well? (Optional)</label>
+                <Field className = "input" name = "comment" placeholder="comment"></Field>
+                
+                <button className = "navLink" type = "submit">Rate</button>
+                <span className = "error">{result}</span>
+            </Form>
+        </Formik>    
+    </div>
     </>);
 };
 

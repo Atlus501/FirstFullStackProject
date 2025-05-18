@@ -1,6 +1,6 @@
 const {Recipes} = require("../models");
 const {matchUsername, matchUserSingle} = require("../utility/matchUsername");
-const {matchRating} = require('../utility/matchRating')
+const {matchRating, matchRatingSingle} = require('../utility/matchRating')
 const {Op} = require('sequelize');
 
 //function for getting 15 recipes
@@ -12,7 +12,6 @@ const getRecipes = async (req,res) =>{
     const recipesWithUsernames = await matchUsername(recipes);
     const finalRecipes = await matchRating(recipesWithUsernames);
 
-    //return res.json(recipesWithUsernames);
     return res.json(finalRecipes);
 };
 
@@ -27,7 +26,10 @@ const getSpecRecipes = async (req, res) => {
             }
         });
 
-        return res.json(recipes);
+        let result = await matchUsername(recipes);
+        result = await matchRating(result);
+
+        return res.json(result);
     }
     catch(error){
         return res.json({error: error});
@@ -43,7 +45,9 @@ const getUserRecipes = async (req, res) =>{
             where:{authorId: userId},
         });
 
-        return res.json(recipes);
+        const finalRecipes = await matchRating(recipes);
+
+        return res.json(finalRecipes);
     }
     catch(error){
         return res.json({error: error});
@@ -64,7 +68,10 @@ const getYourSpecRecipe = async (req, res)=>{
         if(!recipe)
             return res.json({error: "This recipe isn't found"});
 
-        return res.json(recipe);
+        let result = await matchUsername(recipe);
+        result = await matchRating(result);
+
+        return res.json(result);
     }catch(error){
         return res.json({error: error});
     }
@@ -79,7 +86,8 @@ const getSpecRecipesById = async (req, res)=>{
         if(!recipe)
             return res.json({error: "Recipe not found"});
 
-        const result = await matchUserSingle(recipe);
+        let result = await matchUserSingle(recipe);
+        result = await matchRatingSingle(result);
 
         return res.json(result);
     }
