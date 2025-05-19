@@ -116,7 +116,7 @@ function SelectRecipe(){
     </div>
 
     <div className = "form">
-        <button className = "navLink">View Ratings/Comments</button>
+        <button className = "navLink" onClick={()=>{navigate('/recipe/rate/'+id)}}>View Ratings/Comments</button>
     </div>
     </>);
 };

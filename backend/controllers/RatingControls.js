@@ -37,6 +37,7 @@ const getRatings = async(req, res) => {
         return res.json(finalRatings);
 
     }catch(error){
+        console.log('Error in getRatings in file RatingsControl: '+ error);
         return res.json({error: "There is an issue with getting the ratings"});
     }
 };
@@ -53,7 +54,7 @@ const getAverage = async(req, res)=>{
 
         return res.json({result: average});
     }catch(error){
-        return res.json({error: "Something has gone wrong with retrieving the median"});
+        return res.json({error: "Something has gone wrong with retrieving the average"});
     }
 }
 

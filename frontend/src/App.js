@@ -73,7 +73,7 @@ function App() {
           <Route path = "/authed/search/:id" element = {<SelectRecipe/>}/>
           <Route path = "/authed/your" className = "navLink" element = {<YourRecipe/>}/>
           <Route path = "/authed/edit/:id" element = {<EditRecipePage/>}/>
-          <Route path = "/recipe/rate" element = {<RatingsPage/>}/>
+          <Route path = "/recipe/rate/:id" element = {<RatingsPage/>}/>
         </Routes>
       </Router>
       </AuthContext.Provider>

@@ -13,10 +13,10 @@ function RatingsPage(){
     const [error, setError] = useState("");
     const [ratings, setRatings] = useState([]);
 
-    const {recipeId} = useParams();
+    const {id} = useParams();
 
     useEffect(() => {
-        axios.get('http://localhost:3001/recipes/search/id/'+recipeId).then((response) => {
+        axios.get('http://localhost:3001/recipes/search/id/'+id).then((response) => {
             if(response.data.error){
                 setError("An error has occured. Please try again later");
                 return;
@@ -25,7 +25,7 @@ function RatingsPage(){
             setRecipeName(response.data.title)
         });
 
-        axios.get('http://localhost:3001/ratings', {params: {recipeId: recipeId}}).then((response)=>{
+        axios.get('http://localhost:3001/ratings', {params: {recipeId: id, raterId: authState.id}}).then((response)=>{
             if(response.data.error){
                 setError(response.data.error);
                 return;}
@@ -36,7 +36,11 @@ function RatingsPage(){
 
     return (<>
         <div>
-            <h1>Here are all the ratings for {recipeName}</h1>
+
+            <div>
+                <h1>Here are all the ratings for {recipeName}</h1>
+                <button className = "navLink" onClick = {()=>{navigate('/authed/search/'+id)}}>Back</button>
+            </div>
 
             <span className = "error">{error}</span>
 
@@ -44,7 +48,7 @@ function RatingsPage(){
                 return (<>
                     <div className = "form">
                         <h3 className = "heading">Rater: {rate.username}</h3>
-                        <h3 className = "heading">{rate.value}</h3>
+                        <h3 className = "heading">Rating: {Number(rate.value).toFixed(2)} /5.00</h3>
                         <p>{rate.comment}</p>
                     </div>
                 </>);

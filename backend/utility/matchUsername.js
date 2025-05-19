@@ -42,13 +42,12 @@ const matchUserSingle = async (recipe) => {
 
 //method for matching the username to the id
 const matchUserById = async(id) =>{
-    axios.get('http://localhost3001/users', {id: id}).then((response) => {
-        if(response.data.error){
-            console.log(response.data.error);
-            return "";}
+    const user = await Users.findByPk(id);
 
-        return response.data.username;
-    });
+    if(!user)
+        return 0;
+
+    return user.username;
 }
 
 module.exports = {matchUsername, matchUserSingle, matchUserById}
