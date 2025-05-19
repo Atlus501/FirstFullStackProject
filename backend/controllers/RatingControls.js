@@ -1,5 +1,6 @@
 const {Ratings} = require('../models');
 const {Op} = require('sequelize');
+const {matchUserById} = require('../utility/matchUsername');
 
 //REST method for getting the ratings for speciifc recipes 
 const getRatings = async(req, res) => {
@@ -21,9 +22,19 @@ const getRatings = async(req, res) => {
             limit: remainingLimit > 0 ? remainingLimit : 0,
         });
 
-        const ratings = [...userRatings, ...otherRatings]
+        const ratings = [...userRatings, ...otherRatings];
 
-        return res.json(ratings);
+        const finalRatings = await Promise.all(ratings.map(async rec => {
+            const username = await matchUserById(rec.raterId);
+
+            try{
+                return {...rec.toJSON(), username: username};
+            }catch(error){
+                return {...rec, username: username}
+            }
+        }));
+
+        return res.json(finalRatings);
 
     }catch(error){
         return res.json({error: "There is an issue with getting the ratings"});
@@ -46,6 +57,27 @@ const getAverage = async(req, res)=>{
     }
 }
 
+//REST request for getting the user's specific rating
+const getYourRating = async(req, res)=>{
+    const {recipeId, raterId} = req.query;
+
+    try{
+        const rating = await Ratings.findOne({
+            where: {recipeId: recipeId, raterId: raterId},
+            attributes: ["value", "comment"],
+        });
+
+        if(!rating)
+            return res.json({value: 0, comment: ""});
+
+        return res.json(rating);
+
+    }catch(error){
+        console.log('Error in getYourRating in file ${__filename}', error);
+        return res.json({value: 0, comment: ""});
+    }
+}
+
 //REST request for creating the ratings
 const createRating = async (req, res) => {
     const {recipeId, raterId, value, comment} = req.body;
@@ -56,8 +88,12 @@ const createRating = async (req, res) => {
             raterId: raterId,
         }});
 
-        if(rating)
-            return res.json({error: "This recipe already has been rated by you!"});
+        if(rating){
+            rating.value = value;
+            rating.comment = comment;
+            await rating.save();
+            return rating;
+        };
         
         rating = await Ratings.create({
             recipeId: recipeId,
@@ -105,4 +141,4 @@ const updateRating = async(req, res) => {
     }
 };
 
-module.exports = {getRatings, getAverage, createRating, deleteRating, updateRating}
+module.exports = {getRatings, getAverage, getYourRating, createRating, deleteRating, updateRating}

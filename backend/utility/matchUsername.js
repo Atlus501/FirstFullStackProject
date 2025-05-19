@@ -40,4 +40,15 @@ const matchUserSingle = async (recipe) => {
     return result;
 };
 
-module.exports = {matchUsername, matchUserSingle}
+//method for matching the username to the id
+const matchUserById = async(id) =>{
+    axios.get('http://localhost3001/users', {id: id}).then((response) => {
+        if(response.data.error){
+            console.log(response.data.error);
+            return "";}
+
+        return response.data.username;
+    });
+}
+
+module.exports = {matchUsername, matchUserSingle, matchUserById}

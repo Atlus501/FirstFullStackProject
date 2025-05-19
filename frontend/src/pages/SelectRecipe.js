@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import axios from 'axios'
-import {useParams} from 'react-router-dom'
+import {useParams, useNavigate} from 'react-router-dom'
 import {AuthContext} from '../helpers/AuthContext'
 import {Form, Formik, ErrorMessage, Field} from 'formik'
 import * as Yup from 'yup'
@@ -12,6 +12,9 @@ function SelectRecipe(){
     const [recipe, setRecipe] = useState(null);
     const [error, setError] = useState("");
     const [result, setResult] = useState("");
+    const [yourRating, setYourRating] = useState({value: 0, comment: ""});
+
+    const navigate = useNavigate();
 
     const {authState} = useContext(AuthContext);
 
@@ -55,6 +58,10 @@ function SelectRecipe(){
             setError("");
             setRecipe(response.data);
         });
+
+        axios.get('http://localhost:3001/ratings/your', {params: {recipeId: id, raterId: authState.id}}).then((response)=>{
+            setYourRating(response.data);
+        });
     }, []);
 
     return(<>
@@ -68,10 +75,10 @@ function SelectRecipe(){
     </div>
 
     <div>
-        <Formik initialValues = {initialValues} onSubmit = {onSubmit} validationSchema = {validationSchema}>
+        <Formik initialValues = {initialValues} enableReinitialize={true} onSubmit = {onSubmit} validationSchema = {validationSchema}>
             <Form className = "form">
                 <label className = "heading">Rate the Recipe From 0 to 5</label>
-                <Field as="select" name = "value">
+                <Field as="select" name = "value" value = {yourRating.value}>
                     <option value = "0">0</option>
                     <option value = "1">1</option>
                     <option value = "2">2</option>
@@ -82,12 +89,16 @@ function SelectRecipe(){
                 <ErrorMessage className = "error" name = "value" component = "span"></ErrorMessage>
 
                 <label className = "heading">Would you like to leave a comment as well? (Optional)</label>
-                <Field className = "input" name = "comment" placeholder="comment"></Field>
+                <Field className = "input" name = "comment" placeholder="comment" value = {yourRating.comment}></Field>
                 
                 <button className = "navLink" type = "submit">Rate</button>
                 <span className = "error">{result}</span>
             </Form>
         </Formik>    
+    </div>
+
+    <div className = "form">
+        <button className = "navLink">View Ratings/Comments</button>
     </div>
     </>);
 };

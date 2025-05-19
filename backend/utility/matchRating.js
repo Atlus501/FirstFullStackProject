@@ -17,19 +17,18 @@ const matchRating = async(recipes) => {
         });
 
         let result;
+        const ratingMap = Object.fromEntries(avgRatings.map(r => [r.recipeId, Number(r.average_rating).toFixed(2) + "/5.00"]));
 
         try{
             result = recipes.map(recipe => ({
                 ...recipe.toJSON(),
-                averageRating: avgRatings.find(r => r.recipeId === recipe.id)?.average_rating 
-                ? (avgRatings.find(r => r.recipeId === recipe.id).average_rating).toFixed(2) + "/5.0" : "Not Rated"
+                averageRating: ratingMap[recipe.id] || "Not Rated" 
                 })
             );
         }catch(error){
             result = recipes.map(recipe => ({
             ...recipe,
-            averageRating: avgRatings.find(r => r.recipeId === recipe.id)?.average_rating 
-            ? (avgRatings.find(r => r.recipeId === recipe.id).average_rating).toFixed(2) + "/5.0" : "Not Rated"
+            averageRating: ratingMap[recipe.id] || "Not Rated"
             })
             );
         }
@@ -55,20 +54,18 @@ const matchRatingSingle = async (recipe) => {
     try{
         const id = recipe.id;
 
-        const avgRating = await Ratings.findAll({
+        const avgRating = await Ratings.findOne({
             where: {recipeId: id,},
             attributes: [[fn("AVG", col("value")), "average_rating"]],
             raw: true,
         });
 
-        const result = {...recipe, averageRating: avgRating?.average_rating 
-        ? (avgRating.average_rating).toFixed(2) + "/5.0" : "Not Rated"};
-
-        return result;
+        return {...recipe, averageRating: avgRating?.average_rating 
+        ? Number(avgRating.average_rating).toFixed(2) + "/5.00" : "Not Rated"};
 
     }catch(error){
         console.log("An error has occured! "+error);
-        const result = {...recipe, averageRating: "Not Rated"}
+        return {...recipe, averageRating: "Not Rated"}
     }
 }
 

@@ -119,22 +119,7 @@ const updateRecipe = async(req,res)=>{
     const {authorId, title, body} = req.body;
 
     try{
-        // const recipe = await Recipes.findOne({
-        //     where:{
-        //         id: id,
-        //         authorId: authorId,
-        //     }
-        // });
-
-        // if(!recipe)
-        //     return res.json({error: "There is no such recipe"});
-
-        // recipe.title = title;
-        // recipe.body = body;
-
         await Recipes.update({title: title, body: body}, {where: {id: id, authorId: authorId}});
-
-        // await recipe.save();
 
         return res.json({success: "Recipe has been updated successfully!"});
 
