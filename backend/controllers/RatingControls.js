@@ -112,11 +112,12 @@ const createRating = async (req, res) => {
 
 //REST request for deleting a rating
 const deleteRating = async(req, res) => {
-    const {id} = req.body;
+    const {recipeId, raterId} = req.query;
 
     try{
         Ratings.destroy({where: {
-            id: id,
+            recipeId: recipeId,
+            raterId: raterId,
         }});
 
         return res.json({success: "The rating has been removed"});
