@@ -93,7 +93,7 @@ const createRating = async (req, res) => {
             rating.value = value;
             rating.comment = comment;
             await rating.save();
-            return rating;
+            return res.json(rating);
         };
         
         rating = await Ratings.create({
@@ -103,7 +103,7 @@ const createRating = async (req, res) => {
             comment: comment,
         });
 
-        return res.json({rating});
+        return res.json(rating);
     }
     catch(error){
         
